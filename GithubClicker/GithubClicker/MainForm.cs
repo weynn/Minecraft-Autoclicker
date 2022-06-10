@@ -262,57 +262,11 @@ namespace GithubClicker
         {
             /* super basic destruct */
 
-            label1.Dispose();
-            label2.Dispose();
-            label5.Dispose();
-            label6.Dispose();
-            label7.Dispose();
-            label8.Dispose();
-            label9.Dispose();
-            label10.Dispose();
-            label11.Dispose();
-
-            pnLeft.Dispose();
-            pnRight.Dispose();
-            pnCategory.Dispose();
-            pictureBox1.Dispose();
-
-            pbDestruct.Dispose();
-            pbMain.Dispose();
-
-            tgLeft.Dispose();
-            tgRight.Dispose();
-
-            cbBBlocks.Dispose();
-            cbMenus.Dispose();
-            cbRMB.Dispose();
-            cbShiftLeft.Dispose();
-
-            cbShiftRight.Dispose();
-
-            slotL1.Dispose();
-            slotL2.Dispose();
-            slotL3.Dispose();
-            slotL4.Dispose();
-            slotL5.Dispose();
-            slotL6.Dispose();
-            slotL7.Dispose();
-            slotL8.Dispose();
-            slotL9.Dispose();
-
-            slotR1.Dispose();
-            slotR2.Dispose();
-            slotR3.Dispose();
-            slotR4.Dispose();
-            slotR5.Dispose();
-            slotR6.Dispose();
-            slotR7.Dispose();
-            slotR8.Dispose();
-            slotR9.Dispose();
-
-            btBindLeft.Dispose();
-            btBindRight.Dispose();
-
+            foreach (Control currentControl in Controls)
+            {
+                currentControl.Dispose();
+            }
+            
             Task.Delay(1000).Wait();
 
             this.Dispose();
