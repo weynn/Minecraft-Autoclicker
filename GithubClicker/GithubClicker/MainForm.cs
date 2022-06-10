@@ -15,6 +15,7 @@ namespace GithubClicker
 
             Region = Region.FromHrgn(WinApi.CreateRoundRectRgn(0, 0, Width, Height, 15, 15)); /* create rounded borders on form */
 
+            /* initializes tasks */
             Task.Run(() => GetSlots());
             Task.Run(() => DoLeftClick());
             Task.Run(() => DoRightClick());
@@ -23,6 +24,7 @@ namespace GithubClicker
 
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
         {
+            /* moves the gui when left click is held */
             if (e.Button == MouseButtons.Left)
             {
                 WinApi.ReleaseCapture();
@@ -34,6 +36,7 @@ namespace GithubClicker
 
         #region Sliders event
 
+        /* updates label texts according to the slider value */
         private void sldLeftCPS_ValueChanged(object sender, EventArgs e) => lbLeftCPS.Text = $"{"CPS: " + sldLeftCPS.Value}";
         private void sldRightCPS_ValueChanged(object sender, EventArgs e) => lbRightCPS.Text = $"{"CPS: " + sldRightCPS.Value}";
 
@@ -45,7 +48,9 @@ namespace GithubClicker
 
 
         #region Set binds
-        private int leftBind = 0;
+
+        private int leftBind = 0; /* 0 = no key */
+
         private void btBindLeft_Click(object sender, EventArgs e) => btBindLeft.Text = "[...]";
 
         private void btBindLeft_KeyDown(object sender, KeyEventArgs e)
@@ -53,19 +58,22 @@ namespace GithubClicker
             switch (e.KeyCode)
             {
                 case Keys.Escape:
+                    /* set to no key, because escape has been pressed*/
                     leftBind = 0;
                     btBindLeft.Text = "[NONE]";
                     break;
 
-                default:
-                    leftBind = (int)e.KeyCode;
+                default: /* default = any key that has been pressed */
+                    leftBind = (int)e.KeyCode; /* set leftBind to the KeyCode (bind) */
                     btBindLeft.Text = "[" + e.KeyCode + "]";
                     break;
             }
         }
 
 
+        /* doing the exact same but for right */
         private int rightBind = 0;
+
         private void btBindRight_Click(object sender, EventArgs e) => btBindRight.Text = "[...]";
 
         private void btBindRight_KeyDown(object sender, KeyEventArgs e)
@@ -90,9 +98,9 @@ namespace GithubClicker
         #region Binds timer
         private void Binding_Tick(object sender, EventArgs e)
         {
-            if (WinApi.GetAsyncKeyState(leftBind) != 0) tgLeft.Checked = !tgLeft.Checked;
+            if (WinApi.GetAsyncKeyState(leftBind) != 0) tgLeft.Checked = !tgLeft.Checked; /* if key held is leftBind, then it will unable / disable toggle */
 
-            if (WinApi.GetAsyncKeyState(rightBind) != 0) tgRight.Checked = !tgRight.Checked;
+            if (WinApi.GetAsyncKeyState(rightBind) != 0) tgRight.Checked = !tgRight.Checked; /* if key held is rightBind, then it will unable / disable toggle */
         }
         #endregion
 
@@ -103,7 +111,7 @@ namespace GithubClicker
 
         #region Slot whitelist
 
-        private byte currentSlot = 1;
+        private byte currentSlot = 1; /* default current slot set to 1 */
         private async void GetSlots()
         {
             for (;;)
@@ -137,6 +145,7 @@ namespace GithubClicker
         {
             switch (currentSlot)
             {
+                /* switch statement, if current slot = 1, it will check for tgLeft checked and slot checked, if they are false, the slot will be considered as unwhitelisted */
                 case 1: return tgLeft.Checked && slotL1.Checked;
                 case 2: return tgLeft.Checked && slotL2.Checked;
                 case 3: return tgLeft.Checked && slotL3.Checked;
@@ -154,6 +163,7 @@ namespace GithubClicker
         {
             switch (currentSlot)
             {
+                /* same thing but for right clicker */
                 case 1: return tgRight.Checked && slotR1.Checked;
                 case 2: return tgRight.Checked && slotR2.Checked;
                 case 3: return tgRight.Checked && slotR3.Checked;
@@ -173,7 +183,7 @@ namespace GithubClicker
 
         #region Randomisation
 
-        private int randomisedCPSL = 10;
+        private int randomisedCPSL = 10; /* setting a variable for the randomisation */
         private int randomisedCPSR = 10;
         private async void Randomisation()
         {
@@ -183,8 +193,8 @@ namespace GithubClicker
             {
                 await Task.Delay(1000);
 
+                /* randomises the int value in a range of -3, 3 */
                 randomisedCPSL = new Random(Guid.NewGuid().GetHashCode()).Next((int)sldLeftCPS.Value - 3, (int)sldLeftCPS.Value + 3);
-
                 randomisedCPSR = new Random(Guid.NewGuid().GetHashCode()).Next((int)sldRightCPS.Value - 3, (int)sldRightCPS.Value + 3);
             }
         }
@@ -199,12 +209,12 @@ namespace GithubClicker
         {
             for (;;)
             {
-                await Task.Delay(1000 / randomisedCPSL);
+                await Task.Delay(1000 / randomisedCPSL); /* gets the delay interval for cps, 1000 / 10 (cps) for example will get 100 delay, 100 x 10 = 1000 (ms) ; 1000ms = 1 second, so basically avergae cps per second */
 
-                MCHelper.GetMinecraftWindow();
+                MCHelper.GetMinecraftWindow(); /* gets minecraft process */
 
-                if ((cbMenus.Checked && !ClickerExtensionHandle.InMenu()) || !cbMenus.Checked)
-                    LeftConds();
+                if ((cbMenus.Checked && !ClickerExtensionHandle.InMenu()) || !cbMenus.Checked) /* checks if "Disable in menu" checkbox is checked and if you arent in menu OR if "Disable in menu" checkbox is unchecked without checking if u are in menus */
+                    LeftConds(); /* gets in the conditions */
             }
         }
 
@@ -214,11 +224,11 @@ namespace GithubClicker
             {
                 if (cbShiftLeft.Checked && WinApi.GetAsyncKeyState(Keys.LShiftKey) != 0) return; // if shift disabled is checked and if its holding shift, return
 
-                if ((!cbRMB.Checked && WinApi.GetAsyncKeyState(WinApi.VK_LBUTTON) < 0) || (cbRMB.Checked && MouseButtons == MouseButtons.Left))
-                    if (!cbBBlocks.Checked)
-                        LeftClicker.SendMessageLeftClick();
+                if ((!cbRMB.Checked && WinApi.GetAsyncKeyState(WinApi.VK_LBUTTON) < 0) || (cbRMB.Checked && MouseButtons == MouseButtons.Left)) /* if rmb lock checkbox isnt checked and if virtual key is pressed, OR checks if rmb lock checkbox is checked and if key is pressed */
+                    if (!cbBBlocks.Checked) /* if break blocks checkbox is unchecked */
+                        LeftClicker.SendMessageLeftClick(); /* send a normal click */
                     else
-                        LeftClicker.SendMessageLeftClickBreakBlocks();
+                        LeftClicker.SendMessageLeftClickBreakBlocks(); /* else break blocks */
             }
         }
 
@@ -228,6 +238,7 @@ namespace GithubClicker
 
         #region Right clicker
 
+        /* same exact procedure as left clicker but for the right clicker :) */
         private async void DoRightClick()
         {
             for (;;)
@@ -264,13 +275,13 @@ namespace GithubClicker
 
             foreach (Control currentControl in Controls)
             {
-                currentControl.Dispose();
+                currentControl.Dispose(); /* gets each control in Controls and disposes them */
             }
             
             Task.Delay(1000).Wait();
 
             this.Dispose();
-            Environment.Exit(0);
+            Environment.Exit(0); /* exit */
         }
 
         #endregion
