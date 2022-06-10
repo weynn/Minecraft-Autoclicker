@@ -1,0 +1,14 @@
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\bin\Debug\GithubClicker.exe.config
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\bin\Debug\GithubClicker.exe
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\bin\Debug\GithubClicker.pdb
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\obj\Debug\GithubClicker.csproj.AssemblyReference.cache
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\obj\Debug\GithubClicker.csproj.SuggestedBindingRedirects.cache
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\obj\Debug\GithubClicker.MainForm.resources
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\obj\Debug\GithubClicker.Properties.Resources.resources
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\obj\Debug\GithubClicker.csproj.GenerateResource.cache
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\obj\Debug\GithubClicker.csproj.CoreCompileInputs.cache
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\obj\Debug\GithubClicker.exe
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\obj\Debug\GithubClicker.pdb
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\bin\Debug\Siticone.UI.dll
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\obj\Debug\GithubClicker.csproj.CopyComplete
+C:\Users\iweyn\source\repos\GithubClicker\GithubClicker\bin\Debug\ColorSlider.dll
