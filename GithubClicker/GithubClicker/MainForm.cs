@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -9,15 +9,16 @@ namespace GithubClicker
 {
     public partial class MainForm : Form
     {
+        readonly Random rndSeed = new Random(Guid.NewGuid().GetHashCode());
+
         public MainForm()
         {
             InitializeComponent();
 
             Region = Region.FromHrgn(WinApi.CreateRoundRectRgn(0, 0, Width, Height, 15, 15)); /* create rounded borders on form */
 
-            /* initializes tasks */
-            Task.Run(() => GetSlots());
-            Task.Run(() => DoLeftClick());
+            Task.Run(() => GetSlots());         /* runs a new task after MainForm has finished intializing components, which will basically run in a loop and always be on */
+            Task.Run(() => DoLeftClick());      /* ..... */
             Task.Run(() => DoRightClick());
             Task.Run(() => Randomisation());
         }
@@ -36,9 +37,8 @@ namespace GithubClicker
 
         #region Sliders event
 
-        /* updates label texts according to the slider value */
-        private void sldLeftCPS_ValueChanged(object sender, EventArgs e) => lbLeftCPS.Text = $"{"CPS: " + sldLeftCPS.Value}";
-        private void sldRightCPS_ValueChanged(object sender, EventArgs e) => lbRightCPS.Text = $"{"CPS: " + sldRightCPS.Value}";
+        private void sldLeftCPS_ValueChanged(object sender, EventArgs e) => lbLeftCPS.Text = $"{"CPS: " + sldLeftCPS.Value}";       /* lbLeftCPS is a label, the Text will change once sldLeftCPS has its value changed, the text will be updated to "CPS: " + the sldLeftCPS Value */
+        private void sldRightCPS_ValueChanged(object sender, EventArgs e) => lbRightCPS.Text = $"{"CPS: " + sldRightCPS.Value}";    /* same thing but for the right clicker label */
 
         #endregion
 
@@ -58,20 +58,21 @@ namespace GithubClicker
             switch (e.KeyCode)
             {
                 case Keys.Escape:
-                    /* set to no key, because escape has been pressed*/
-                    leftBind = 0;
-                    btBindLeft.Text = "[NONE]";
-                    break;
+                    leftBind = 0; /* set leftBind to 0, because escape has been pressed*/
+                    btBindLeft.Text = "[NONE]"; /* set to no key too */
+                    break; /* breaks out */
 
                 default: /* default = any key that has been pressed */
                     leftBind = (int)e.KeyCode; /* set leftBind to the KeyCode (bind) */
                     btBindLeft.Text = "[" + e.KeyCode + "]";
-                    break;
+                    break; /* breaks out */
             }
         }
 
 
-        /* doing the exact same but for right */
+        /*                                          */
+        /* doing the exact same thing but for right */
+        /*                                          */
         private int rightBind = 0;
 
         private void btBindRight_Click(object sender, EventArgs e) => btBindRight.Text = "[...]";
@@ -114,24 +115,24 @@ namespace GithubClicker
         private byte currentSlot = 1; /* default current slot set to 1 */
         private async void GetSlots()
         {
-            for (;;)
+            for (;;) /* will loop and never stop, until it breaks */
             {
                 await Task.Delay(50);
 
-                GetKeyPressed(); /* get pressed key to get current slot position */
+                GetKeyPressed();        /* get pressed key to get current slot position */
 
-                IsWhitelistedLeft(); /* bool checking if the current left slot is whitelisted */
-                IsWhitelistedRight(); /* same but for right click */
+                IsWhitelistedLeft();    /* bool checking if the current left slot is whitelisted */
+                IsWhitelistedRight();   /* same but for right click */
             }
         }
 
 
         private void GetKeyPressed()
         {
-            if (WinApi.GetAsyncKeyState(DefaultKeys.keyS1) != 0) currentSlot = 1;
-            if (WinApi.GetAsyncKeyState(DefaultKeys.keyS2) != 0) currentSlot = 2;
-            if (WinApi.GetAsyncKeyState(DefaultKeys.keyS3) != 0) currentSlot = 3;
-            if (WinApi.GetAsyncKeyState(DefaultKeys.keyS4) != 0) currentSlot = 4;
+            if (WinApi.GetAsyncKeyState(DefaultKeys.keyS1) != 0) currentSlot = 1; /* if get pressed is D1, current slot = 1 */
+            if (WinApi.GetAsyncKeyState(DefaultKeys.keyS2) != 0) currentSlot = 2; /* if get pressed is D2, current slot = 2 */
+            if (WinApi.GetAsyncKeyState(DefaultKeys.keyS3) != 0) currentSlot = 3; /* if get pressed is D3, current slot = 3 */
+            if (WinApi.GetAsyncKeyState(DefaultKeys.keyS4) != 0) currentSlot = 4; /* ........ */
             if (WinApi.GetAsyncKeyState(DefaultKeys.keyS5) != 0) currentSlot = 5;
             if (WinApi.GetAsyncKeyState(DefaultKeys.keyS6) != 0) currentSlot = 6;
             if (WinApi.GetAsyncKeyState(DefaultKeys.keyS7) != 0) currentSlot = 7;
@@ -145,12 +146,11 @@ namespace GithubClicker
         {
             switch (currentSlot)
             {
-                /* switch statement, if current slot = 1, it will check for tgLeft checked and slot checked, if they are false, the slot will be considered as unwhitelisted */
-                case 1: return tgLeft.Checked && slotL1.Checked;
-                case 2: return tgLeft.Checked && slotL2.Checked;
-                case 3: return tgLeft.Checked && slotL3.Checked;
-                case 4: return tgLeft.Checked && slotL4.Checked;
-                case 5: return tgLeft.Checked && slotL5.Checked;
+                case 1: return tgLeft.Checked && slotL1.Checked; /* if current slot = 1, it'll check if tgLeft AND slotL1 is checked, if not, slot is considered unwhitelisted */
+                case 2: return tgLeft.Checked && slotL2.Checked; /* if current slot = 2, it'll check if tgLeft AND slotL2 is checked, if not, slot is considered unwhitelisted */
+                case 3: return tgLeft.Checked && slotL3.Checked; /* if current slot = 3, it'll check if tgLeft AND slotL3 is checked, if not, slot is considered unwhitelisted */
+                case 4: return tgLeft.Checked && slotL4.Checked; /* if current slot = 4, it'll check if tgLeft AND slotL4 is checked, if not, slot is considered unwhitelisted */
+                case 5: return tgLeft.Checked && slotL5.Checked; /* ........ */
                 case 6: return tgLeft.Checked && slotL6.Checked;
                 case 7: return tgLeft.Checked && slotL7.Checked;
                 case 8: return tgLeft.Checked && slotL8.Checked;
@@ -163,12 +163,11 @@ namespace GithubClicker
         {
             switch (currentSlot)
             {
-                /* same thing but for right clicker */
-                case 1: return tgRight.Checked && slotR1.Checked;
-                case 2: return tgRight.Checked && slotR2.Checked;
-                case 3: return tgRight.Checked && slotR3.Checked;
-                case 4: return tgRight.Checked && slotR4.Checked;
-                case 5: return tgRight.Checked && slotR5.Checked;
+                case 1: return tgRight.Checked && slotR1.Checked; /* if current slot = 1, it'll check if tgRight AND slotR1 is checked, if not, slot is considered unwhitelisted */
+                case 2: return tgRight.Checked && slotR2.Checked; /* if current slot = 2, it'll check if tgRight AND slotR2 is checked, if not, slot is considered unwhitelisted */
+                case 3: return tgRight.Checked && slotR3.Checked; /* if current slot = 3, it'll check if tgRight AND slotR3 is checked, if not, slot is considered unwhitelisted */
+                case 4: return tgRight.Checked && slotR4.Checked; /* if current slot = 4, it'll check if tgRight AND slotR4 is checked, if not, slot is considered unwhitelisted */
+                case 5: return tgRight.Checked && slotR5.Checked; /* ........ */
                 case 6: return tgRight.Checked && slotR6.Checked;
                 case 7: return tgRight.Checked && slotR7.Checked;
                 case 8: return tgRight.Checked && slotR8.Checked;
@@ -183,19 +182,22 @@ namespace GithubClicker
 
         #region Randomisation
 
-        private int randomisedCPSL = 10; /* setting a variable for the randomisation */
+        private int randomisedCPSL = 10; /* setting a variable for the randomisation, that will be used for the average cps */
         private int randomisedCPSR = 10;
         private async void Randomisation()
         {
             /* basic randomisation system */
 
-            for (;;)
+            for (;;) /* will loop and never stop, until it breaks */
             {
                 await Task.Delay(1000);
 
                 /* randomises the int value in a range of -3, 3 */
-                randomisedCPSL = new Random(Guid.NewGuid().GetHashCode()).Next((int)sldLeftCPS.Value - 3, (int)sldLeftCPS.Value + 3);
-                randomisedCPSR = new Random(Guid.NewGuid().GetHashCode()).Next((int)sldRightCPS.Value - 3, (int)sldRightCPS.Value + 3);
+                randomisedCPSL = rndSeed.Next((int)sldLeftCPS.Value - 3, 
+                                              (int)sldLeftCPS.Value + 3);
+
+                randomisedCPSR = rndSeed.Next((int)sldRightCPS.Value - 3, 
+                                              (int)sldRightCPS.Value + 3);
             }
         }
 
@@ -207,28 +209,28 @@ namespace GithubClicker
 
         private async void DoLeftClick()
         {
-            for (;;)
+            for (;;) /* will loop and never stop, until it breaks */
             {
-                await Task.Delay(1000 / randomisedCPSL); /* gets the delay interval for cps, 1000 / 10 (cps) for example will get 100 delay, 100 x 10 = 1000 (ms) ; 1000ms = 1 second, so basically avergae cps per second */
+                await Task.Delay(1000 / randomisedCPSL); /* gets the delay interval for cps, 1000 / 10 (cps) for example will get 100 delay, 100 x 10 = 1000 (ms) ; 1000ms = 1 second. (basically average cps per second) */
 
                 MCHelper.GetMinecraftWindow(); /* gets minecraft process */
 
-                if ((cbMenus.Checked && !ClickerExtensionHandle.InMenu()) || !cbMenus.Checked) /* checks if "Disable in menu" checkbox is checked and if you arent in menu OR if "Disable in menu" checkbox is unchecked without checking if u are in menus */
+                if ((cbMenus.Checked && !ClickerExtensionHandle.InMenu()) || !cbMenus.Checked) /* checks if "Disable in menu" checkbox is checked AND if you arent in menu ; OR if "Disable in menu" checkbox is unchecked without checking if u are in menus (that'll skip the checking if in menu part) */
                     LeftConds(); /* gets in the conditions */
             }
         }
 
         private void LeftConds()
         {
-            if (IsWhitelistedLeft() && tgLeft.Checked) // checks if current slot is whitelisted AND if left clicker is toggled
+            if (IsWhitelistedLeft() && tgLeft.Checked) /* checks if current slot is whitelisted AND if left clicker is toggled */
             {
-                if (cbShiftLeft.Checked && WinApi.GetAsyncKeyState(Keys.LShiftKey) != 0) return; // if shift disabled is checked and if its holding shift, return
+                if (cbShiftLeft.Checked && WinApi.GetAsyncKeyState(Keys.LShiftKey) != 0) return; /* if shift disabled is checked and if its holding shift, return */
 
-                if ((!cbRMB.Checked && WinApi.GetAsyncKeyState(WinApi.VK_LBUTTON) < 0) || (cbRMB.Checked && MouseButtons == MouseButtons.Left)) /* if rmb lock checkbox isnt checked and if virtual key is pressed, OR checks if rmb lock checkbox is checked and if key is pressed */
-                    if (!cbBBlocks.Checked) /* if break blocks checkbox is unchecked */
-                        LeftClicker.SendMessageLeftClick(); /* send a normal click */
+                if ((!cbRMB.Checked && WinApi.GetAsyncKeyState(WinApi.VK_LBUTTON) < 0) || (cbRMB.Checked && MouseButtons == MouseButtons.Left)) /* if rmb lock checkbox isnt checked AND if virtual key is pressed ; OR checks if rmb lock checkbox is checked AND if key is pressed */
+                    if (!cbBBlocks.Checked)                             /* if break blocks isnt checked */
+                        LeftClicker.SendMessageLeftClick();             /* send a normal click */
                     else
-                        LeftClicker.SendMessageLeftClickBreakBlocks(); /* else break blocks */
+                        LeftClicker.SendMessageLeftClickBreakBlocks();  /* else break blocks */
             }
         }
 
@@ -238,11 +240,12 @@ namespace GithubClicker
 
         #region Right clicker
 
-        /* same exact procedure as left clicker but for the right clicker :) */
         private async void DoRightClick()
         {
-            for (;;)
+            for (;; ) /* will loop and never stops, until it breaks */
             {
+                /* same exact procedure as left clicker but for the right clicker :) */
+
                 await Task.Delay(1000 / randomisedCPSR);
 
                 MCHelper.GetMinecraftWindow();
@@ -253,12 +256,12 @@ namespace GithubClicker
 
         private void RightConds()
         {
-            if (IsWhitelistedRight() && tgRight.Checked) // checks if current slot is whitelisted AND if right clicker is toggled
+            if (IsWhitelistedRight() && tgRight.Checked) /* checks if current slot is whitelisted AND if right clicker is toggled */
             {
-                if (cbShiftRight.Checked && WinApi.GetAsyncKeyState(Keys.LShiftKey) != 0) return;
+                if (cbShiftRight.Checked && WinApi.GetAsyncKeyState(Keys.LShiftKey) != 0) return;  /* if shift disabled is checked and if its holding shift, return */
 
-                if (WinApi.GetAsyncKeyState(WinApi.VK_RBUTTON) < 0)
-                    RightClicker.SendMessageRightClick();
+                if (WinApi.GetAsyncKeyState(WinApi.VK_RBUTTON) < 0)     /* checks if virtual key is pressed (right mouse button) */
+                    RightClicker.SendMessageRightClick();               /* send a click */
             }
         }
 
@@ -273,14 +276,14 @@ namespace GithubClicker
         {
             /* super basic destruct */
 
-            foreach (Control currentControl in Controls)
+            foreach (Control currentControl in Controls) /* for each Control that we get in Controls */
             {
-                currentControl.Dispose(); /* gets each control in Controls and disposes them */
+                currentControl.Dispose(); /* dispose all Control that are in Conrols */
             }
-            
+
             Task.Delay(1000).Wait();
 
-            this.Dispose();
+            Dispose();
             Environment.Exit(0); /* exit */
         }
 
