@@ -37,8 +37,8 @@ namespace GithubClicker
 
         #region Sliders event
 
-        private void sldLeftCPS_ValueChanged(object sender, EventArgs e) => lbLeftCPS.Text = $"{"CPS: " + sldLeftCPS.Value}";       /* lbLeftCPS is a label, the Text will change once sldLeftCPS has its value changed, the text will be updated to "CPS: " + the sldLeftCPS Value */
-        private void sldRightCPS_ValueChanged(object sender, EventArgs e) => lbRightCPS.Text = $"{"CPS: " + sldRightCPS.Value}";    /* same thing but for the right clicker label */
+        private void sldLeftCPS_ValueChanged(object sender, EventArgs e) => lbLeftCPS.Text = $"{"CPS: " + sldLeftCPS.Value}";       
+        private void sldRightCPS_ValueChanged(object sender, EventArgs e) => lbRightCPS.Text = $"{"CPS: " + sldRightCPS.Value}";    
 
         #endregion
 
@@ -58,14 +58,14 @@ namespace GithubClicker
             switch (e.KeyCode)
             {
                 case Keys.Escape:
-                    leftBind = 0; /* set leftBind to 0, because escape has been pressed*/
-                    btBindLeft.Text = "[NONE]"; /* set to no key too */
-                    break; /* breaks out */
+                    leftBind = 0;               /* set leftBind to no key */
+                    btBindLeft.Text = "[NONE]"; /* set the label to be None */
+                    break;                      
 
-                default: /* default = any key that has been pressed */
-                    leftBind = (int)e.KeyCode; /* set leftBind to the KeyCode (bind) */
+                default:                        /* default = any key that has been pressed */
+                    leftBind = (int)e.KeyCode;
                     btBindLeft.Text = "[" + e.KeyCode + "]";
-                    break; /* breaks out */
+                    break;
             }
         }
 
@@ -99,9 +99,9 @@ namespace GithubClicker
         #region Binds timer
         private void Binding_Tick(object sender, EventArgs e)
         {
-            if (WinApi.GetAsyncKeyState(leftBind) != 0) tgLeft.Checked = !tgLeft.Checked; /* if key held is leftBind, then it will unable / disable toggle */
+            if (WinApi.GetAsyncKeyState(leftBind) != 0) tgLeft.Checked = !tgLeft.Checked;       /* if key held is leftBind, then it will unable / disable toggle */
 
-            if (WinApi.GetAsyncKeyState(rightBind) != 0) tgRight.Checked = !tgRight.Checked; /* if key held is rightBind, then it will unable / disable toggle */
+            if (WinApi.GetAsyncKeyState(rightBind) != 0) tgRight.Checked = !tgRight.Checked;    /* if key held is rightBind, then it will unable / disable toggle */
         }
         #endregion
 
@@ -216,7 +216,7 @@ namespace GithubClicker
                 MCHelper.GetMinecraftWindow(); /* gets minecraft process */
 
                 if ((cbMenus.Checked && !ClickerExtensionHandle.InMenu()) || !cbMenus.Checked) /* checks if "Disable in menu" checkbox is checked AND if you arent in menu ; OR if "Disable in menu" checkbox is unchecked without checking if u are in menus (that'll skip the checking if in menu part) */
-                    LeftConds(); /* gets in the conditions */
+                    LeftConds();
             }
         }
 
@@ -242,7 +242,7 @@ namespace GithubClicker
 
         private async void DoRightClick()
         {
-            for (;; ) /* will loop and never stops, until it breaks */
+            for (;; )
             {
                 /* same exact procedure as left clicker but for the right clicker :) */
 
