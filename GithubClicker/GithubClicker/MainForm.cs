@@ -148,8 +148,8 @@ namespace GithubClicker
             {
                 case 1: return tgLeft.Checked && slotL1.Checked; /* if current slot = 1, it'll check if tgLeft AND slotL1 is checked, if not, slot is considered unwhitelisted */
                 case 2: return tgLeft.Checked && slotL2.Checked; /* if current slot = 2, it'll check if tgLeft AND slotL2 is checked, if not, slot is considered unwhitelisted */
-                case 3: return tgLeft.Checked && slotL3.Checked; /* if current slot = 3, it'll check if tgLeft AND slotL3 is checked, if not, slot is considered unwhitelisted */
-                case 4: return tgLeft.Checked && slotL4.Checked; /* if current slot = 4, it'll check if tgLeft AND slotL4 is checked, if not, slot is considered unwhitelisted */
+                case 3: return tgLeft.Checked && slotL3.Checked; 
+                case 4: return tgLeft.Checked && slotL4.Checked; 
                 case 5: return tgLeft.Checked && slotL5.Checked; /* ........ */
                 case 6: return tgLeft.Checked && slotL6.Checked;
                 case 7: return tgLeft.Checked && slotL7.Checked;
@@ -165,8 +165,8 @@ namespace GithubClicker
             {
                 case 1: return tgRight.Checked && slotR1.Checked; /* if current slot = 1, it'll check if tgRight AND slotR1 is checked, if not, slot is considered unwhitelisted */
                 case 2: return tgRight.Checked && slotR2.Checked; /* if current slot = 2, it'll check if tgRight AND slotR2 is checked, if not, slot is considered unwhitelisted */
-                case 3: return tgRight.Checked && slotR3.Checked; /* if current slot = 3, it'll check if tgRight AND slotR3 is checked, if not, slot is considered unwhitelisted */
-                case 4: return tgRight.Checked && slotR4.Checked; /* if current slot = 4, it'll check if tgRight AND slotR4 is checked, if not, slot is considered unwhitelisted */
+                case 3: return tgRight.Checked && slotR3.Checked; 
+                case 4: return tgRight.Checked && slotR4.Checked; 
                 case 5: return tgRight.Checked && slotR5.Checked; /* ........ */
                 case 6: return tgRight.Checked && slotR6.Checked;
                 case 7: return tgRight.Checked && slotR7.Checked;
